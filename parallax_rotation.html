@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body, html {
+      font-family: 'Lato', sans-serif;
+      color: #333;
+      background-color: #C5CAE9;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .wrapper {
+      position: absolute;
+      top: 27%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .noise {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      background-image: url(1.png); /* Your noise image data here */
+    }
+
+    .centered-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      height: 100vh;
+    }
+
+    .centered-image img {
+      border-radius: 50%; 
+      width: 300px; 
+      height: 300px;
+    }
+
+    .image-container {
+      position: absolute;
+      border-radius: 50%;
+      width: 300px;
+      height: 300px;
+      animation: parallax 2s infinite;
+    }
+
+    @keyframes parallax {
+      0% {
+        transform: translate(0, 0);
+      }
+      50% {
+        transform: translate(10px, 10px);
+      }
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div class="wrapper">
+      <div id="layer-1" class="art">
+        <div class="noise"></div>
+      </div>
+      <div id="layer-2" class="texts">
+      </div>
+      <div id="door_1" class="door"></div>
+      <div class="door-shadow"></div>
+      <div class="door-shadow-2"></div>
+      <div id="door_2" class="door"></div>
+      <div class="gradient-1"></div>
+      <div class="gradient-2"></div>
+      <div id="layer-3" class="round">
+        <div class="textbox">
+          <span id="text_6"></span>
+          <h1 id="text_7" class="clip-text" data-text="Create">parallax</h1>
+          <h1 id="text_8" class="clip-text">Image</h1>
+        </div>
+      </div>
+      <div class="centered-image">
+        <img src="1.png" class="man" id="layer-4">
+      </div>
+      <div class="image-container" style="top: 100px; left: 200px;"></div>
+      <div class="image-container" style="top: 200px; left: 500px;"></div>
+      <div class="image-container" style="top: 300px; left: 300px;"></div>
+      <div class="image-container" style="top: 400px; left: 700px;"></div>
+      <div class="image-container" style="top: 500px; left: 400px;"></div>
+    </div>
+  </div>
+</body>
+<script>
+  window.onload = function () {
+    var wrapper = document.querySelector('#wrapper');
+    var layerOne = document.querySelector('#layer-1');
+    var layerTwo = document.querySelector('#layer-2');
+    var layerThree = document.querySelector('#layer-3');
+    var layerFour = document.querySelector('#layer-4');
+
+    wrapper.addEventListener('mousemove', function (e) {
+      var pageX = e.clientX - window.innerWidth / 2;
+      var pageY = e.clientY - window.innerHeight / 2;
+      layerOne.style.transform = 'translateX(-' + (50 + pageX / 200) + '%) translateY(-' + (50 + pageY / 200) + '%)';
+      layerTwo.style.transform = 'translateX(-' + (50 + pageX / 1000) + '%) translateY(-' + (50 + pageY / 1000) + '%)';
+      layerThree.style.transform = 'translateX(-' + (50 + pageX / 200) + '%) translateY(-' + (50 + pageY / 200) + '%)';
+      layerFour.style.transform = 'translateX(-' + (50 + pageX / 25) + '%) translateY(-' + (50 + pageY / 25) + '%)';
+    });
+  };
+</script>
+</html>
