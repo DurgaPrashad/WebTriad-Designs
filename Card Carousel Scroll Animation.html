@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 62.5%;
+        }
+
+        body {
+            font-family: sans-serif;
+            padding-top: 40px;
+            background: #111;
+        }
+
+        .container {
+            height: auto;
+            width: calc((220px * 3) + 32px);
+            overflow: hidden;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #wrapper {
+            width: 100%;
+            max-width: calc((220px * 3) + 32px);
+            overflow-x: scroll;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 16px;
+            position: relative;
+            padding-top: 12px;
+            padding-left: 0px;
+            padding-right: 220px;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .card {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    height: 460px;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 24px 16px 16px 16px;
+    border: 1px solid black;
+    position: relative;
+    border-radius: 16px;
+    transition: 300ms linear;
+    background: linear-gradient(180deg, white, black); /* Add gradient background */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Add background glow effect */
+}
+
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card .name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            position: absolute;
+            left: 16px;
+            top: 22px;
+            font-family: 'Roboto Condensed', sans-serif;
+            color: #111;
+        }
+
+        .card .title {
+            font-size: 2.4rem;
+            margin-top: 15px;
+            text-align: left;
+            text-transform: uppercase;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+        }
+
+        .card .description {
+            font-size: 1.3rem;
+            word-break: break-word;
+            width: 100%;
+            display: flex;
+            line-height: 160%;
+        }
+
+        .card .action {
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: 200ms linear;
+        }
+
+        .card .action:hover {
+            background: #000;
+        }
+
+        .card .action:hover svg,
+        .card .action:hover svg path {
+            stroke: #fff;
+        }
+
+        .card img {
+            border-radius: 20px;
+            width: 100px; /* Adjusted image size to 100px by 100px */
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="wrapper">
+        </div>
+    </div>
+   
+    <script>
+        let timer = null;
+       const projects = [
+   [
+    {
+        "title": "DP",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nisl sed justo fermentum dapibus.",
+        "image": "img/1.png",
+        "bg": "#55efc4"
+    },
+    {
+        "title": "FOUNDER",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies ligula ac turpis tincidunt, ac aliquet sapien tincidunt.",
+        "image": "img/2.png",
+        "bg": "#a29bfe"
+    },
+    {
+        "title": "Random Product",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque euismod ligula vitae felis feugiat.",
+        "image": "img/3.png",
+        "bg": "#00f9ff"
+    },
+    {
+        "title": "Placeholder Cloud",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce convallis turpis id lorem dictum, a vestibulum nunc ultrices.",
+        "image": "img/4.png",
+        "bg": "#55efc4"
+    },
+    {
+        "title": "Lorem Share",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sapien in metus tincidunt euismod vel eget risus.",
+        "image": "img/5.png",
+        "bg": "#a29bfe"
+    },
+    {
+        "title": "Coding Challenge",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin facilisis justo ac libero cursus, a eleifend ante cursus.",
+        "image": "img/6.png",
+        "bg": "#ffeaa7"
+    },
+    {
+        "title": "Data Management",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit libero in est mattis, sit amet vulputate odio tempus.",
+        "image": "img/7.png",
+        "bg": "#55efc4"
+    },
+    {
+        "title": "Messenger App",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur metus in est tincidunt, et mattis elit tristique.",
+        "image": "img/8.png",
+        "bg": "#a29bfe"
+    }
+]
+
+        const wrapper = () => document.querySelector("#wrapper");
+
+        const observerOptions = {
+            root: wrapper(),
+            rootMargin: "0px 0px 0px -220px"
+        };
+
+        function makeCard(id, title, description, bg, image) {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.setAttribute("data-id", id);
+            card.style.background = bg;
+
+            const name = document.createElement("p");
+            name.classList.add("name");
+            name.innerText = "proups";
+
+            const _title = document.createElement("h2");
+            _title.classList.add("title");
+            _title.innerText = title || "Title";
+
+            const desc = document.createElement("p");
+            desc.classList.add("description");
+            desc.innerText = description || "Building";
+
+            const action = document.createElement("div");
+            action.classList.add("action");
+            action.innerHTML = '<svg>...</svg>'; // Replace with your actual SVG code
+
+            const img = document.createElement("img");
+            img.src = image || "img/building.png"; // Provide a default image path
+
+            card.append(name, _title, desc, action, img);
+            return card;
+        }
+
+        function initialize(fn) {
+            projects.map((p, index) => {
+                wrapper().append(makeCard(index, p.title, p.description, p.bg, p.image));
+                if (index + 1 === projects.length) {
+                    fn();
+                }
+            });
+        }
+
+        function addNewCardsInTheLastPosition(cards) {
+            const cardId = parseInt(cards[cards.length - 1].getAttribute("data-id"));
+            const previewId = cardId + 1;
+            const id = previewId >= projects.length ? 0 : previewId;
+            const data = projects[id];
+
+            wrapper().append(makeCard(id, data.title, data.description, data.bg, data.image));
+        }
+
+        const onScrollHandle = (ev) => {
+            const { deltaY } = ev;
+            const _wrapper = wrapper();
+
+            function scroll() {
+                ev.stopPropagation();
+
+                if (deltaY < 0) {
+                    ev.preventDefault();
+                    if (_wrapper.scrollLeft === 0) {
+                        _wrapper.lastElementChild.scrollIntoView();
+                        return;
+                    }
+
+                    _wrapper.scrollLeft += 220 * -1;
+                } else if (deltaY > 0) {
+                    _wrapper.scrollLeft += 220 * 1;
+                    ev.preventDefault();
+                }
+                clearTimeout(timer);
+            }
+
+            clearTimeout(timer);
+            timer = setTimeout(scroll, 250);
+        };
+
+        initialize(() => {
+            let lastCard = wrapper().lastElementChild;
+
+            const callback = ([{ isIntersecting }]) => {
+                if (isIntersecting) {
+                    addNewCardsInTheLastPosition(wrapper().childNodes);
+                    obs.unobserve(lastCard);
+                    lastCard = wrapper().lastElementChild;
+                    obs.observe(lastCard);
+                }
+            };
+
+            const obs = new IntersectionObserver(callback, observerOptions);
+            obs.observe(lastCard);
+        });
+
+        // Starting scroll without SHIFT in Firefox
+        wrapper().addEventListener("wheel", onScrollHandle);
+    </script>
+</body>
+</html>
